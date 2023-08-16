@@ -3,11 +3,10 @@ import { Link } from "../ui/Link";
 import { routes } from "@/constants";
 
 export async function StartButton() {
-  const isAuth = false;
-
+  const isAuth = true;
   return (
     <Link
-      href={isAuth ? "#discover" : routes.auth.signup}
+      href={isAuth ? routes.music.musics : routes.auth.signup}
       variant="default"
       className="group inline-flex items-center px-4 py-1.5
                  font-semibold transition"

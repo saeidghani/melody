@@ -4,4 +4,8 @@ export const routes = {
     signin: "/signin",
     signup: "/signup",
   },
+  music: {
+    musics: "/musics",
+    playlist: "/playlists",
+  },
 };
