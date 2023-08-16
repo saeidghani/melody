@@ -1,5 +1,7 @@
 import { Container } from "@/components/common/Container";
-import { NewPlaylist } from "./NewPlaylist";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { PlaylistDialog } from "../../../components/common/PlaylistDialog";
 import { PlaylistCard } from "./PlaylistCard";
 
 export default function PlaylistsPage() {
@@ -7,7 +9,13 @@ export default function PlaylistsPage() {
     <section id="playlists" aria-label="playlists">
       <Container>
         <h1 className="text-2xl font-bold mb-6 text-center">Playlists</h1>
-        <NewPlaylist />
+        <div className="flex justify-end">
+          <PlaylistDialog>
+            <Button>
+              <Plus /> New Playlist
+            </Button>
+          </PlaylistDialog>
+        </div>
         <div
           className="-mx-px grid grid-cols-1 xxs:grid-cols-2 md:grid-cols-3
                      lg:grid-cols-2 xl:grid-cols-3 

@@ -1,5 +1,5 @@
 import { Container } from "@/components/common/Container";
-import { DataTable } from "./DataTable";
+import { DataTable } from "@/components/common/DataTable";
 import { columns } from "./columns";
 
 const data = [

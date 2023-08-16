@@ -6,8 +6,8 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { messages } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus } from "lucide-react";
-import { useState } from "react";
+
+import { ReactNode, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -21,14 +21,24 @@ const signinSchema = z.object({
 
 type FormValues = z.infer<typeof signinSchema>;
 
-export function NewPlaylist() {
+interface NewPlaylistProps {
+  children: ReactNode;
+  title?: string;
+  cover?: string;
+}
+
+export function PlaylistDialog({ children, title, cover }: NewPlaylistProps) {
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<FormValues>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
-      title: "",
+      title: title ?? "",
     },
   });
+
+  useEffect(() => {
+    form.setValue("title", title ?? "");
+  }, [cover, form, title]);
 
   function onSubmit(values: FormValues) {
     console.log(values);
@@ -37,13 +47,7 @@ export function NewPlaylist() {
   return (
     <>
       <Dialog>
-        <div className="flex justify-end">
-          <DialogTrigger asChild>
-            <Button>
-              <Plus /> New Playlist
-            </Button>
-          </DialogTrigger>
-        </div>
+        <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent className="sm:max-w-[400px]">
           <Form {...form}>
             <form
@@ -56,7 +60,12 @@ export function NewPlaylist() {
                 control={form.control}
                 inputProps={{ placeholder: "Please enter playlist title" }}
               />
-              <UploadField name="cover" label="cover" control={form.control} />
+              <UploadField
+                name="cover"
+                label="cover"
+                control={form.control}
+                defaultImagePreview={cover}
+              />
               <Button type="submit" width="full" loading={isLoading}>
                 Submit
               </Button>
