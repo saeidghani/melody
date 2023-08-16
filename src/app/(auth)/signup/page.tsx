@@ -21,13 +21,10 @@ const signupSchema = z
       .min(8, messages.password.min),
     passwordConfirm: z.string().min(1, messages.password.passwordConfirm),
   })
-  .refine(
-    (data) => data.password === data.passwordConfirm,
-    (data) => ({
-      message: `${data.password} ${data.passwordConfirm}`,
-      path: ["passwordConfirm"],
-    })
-  );
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: messages.password.passwordConfirmMisMatch,
+    path: ["passwordConfirm"],
+  });
 
 type FormValues = z.infer<typeof signupSchema>;
 
@@ -80,7 +77,7 @@ export default function SignupPage() {
             }}
           />
           <Button type="submit" width="full">
-            Continue
+            Sign up
           </Button>
         </form>
         <div className="grid place-content-center mt-4">

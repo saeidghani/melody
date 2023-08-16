@@ -5,7 +5,7 @@ export const messages = {
   },
   password: {
     required: "Please enter your password",
-    min: "Please enter a valid password",
+    min: "Password must have at least 8 characters",
     passwordConfirm: "Please confirm your password",
     passwordConfirmMisMatch: "Password and password confirm are not equal",
   },
