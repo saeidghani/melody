@@ -1,6 +1,6 @@
 "use client";
 import { TextField } from "@/components/form/TextField";
-import { Link } from "@/components/ui/Link";
+import { Link } from "@/components/ui/link";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { messages, routes } from "@/constants";

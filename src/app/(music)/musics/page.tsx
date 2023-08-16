@@ -42,9 +42,9 @@ export default function MusicsPage() {
         <h1 className="text-2xl font-bold mb-6 text-center">
           Available musics
         </h1>
-        <ul className="mt-8">
+        <div className="mt-8">
           <DataTable columns={columns} data={data} />
-        </ul>
+        </div>
       </Container>
     </section>
   );

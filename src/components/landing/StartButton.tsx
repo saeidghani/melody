@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "../ui/Link";
+import { Link } from "../ui/link";
 import { routes } from "@/constants";
 
 export async function StartButton() {

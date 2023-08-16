@@ -6,6 +6,9 @@ export const routes = {
   },
   music: {
     musics: "/musics",
-    playlist: "/playlists",
+    playlist: {
+      index: "/playlists",
+      view: (playlistId: number) => `/playlists/${playlistId}`,
+    },
   },
 };

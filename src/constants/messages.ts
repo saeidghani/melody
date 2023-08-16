@@ -9,4 +9,8 @@ export const messages = {
     passwordConfirm: "Please confirm your password",
     passwordConfirmMisMatch: "Password and password confirm are not equal",
   },
+  playlist: {
+    required: "Please enter playlist title",
+    min: "title must have at least 3 characters",
+  },
 };

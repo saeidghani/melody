@@ -1,7 +1,7 @@
 import { routes } from "@/constants";
 import { Container } from "../common/Container";
 import { Logo } from "../common/Logo";
-import { Link } from "../ui/Link";
+import { Link } from "../ui/link";
 import clsx from "clsx";
 
 type Item = {
