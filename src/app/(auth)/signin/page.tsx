@@ -1,19 +1,19 @@
 "use client";
+import { login } from "@/api/auth";
 import { TextField } from "@/components/form/TextField";
-import { Link } from "@/components/ui/link";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { Link } from "@/components/ui/link";
 import { messages, routes } from "@/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 const signinSchema = z.object({
-  email: z
-    .string()
-    .min(1, messages.email.required)
-    .email(messages.email.invalid),
+  username: z.string().min(1, messages.username.required),
   password: z.string().min(1, messages.password.required),
 });
 
@@ -21,16 +21,43 @@ type FormValues = z.infer<typeof signinSchema>;
 
 export default function SigninPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const form = useForm<FormValues>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
 
-  function onSubmit(values: FormValues) {
-    console.log(values);
+  async function onSubmit(values: FormValues) {
+    const { username, password } = values;
+
+    const body = {
+      username,
+      password,
+    };
+
+    setIsLoading(true);
+
+    await login(body, {
+      onSuccess: (data) => {
+        const { access_token, access_token_expration } = data?.result || {};
+
+        if (access_token && access_token_expration) {
+          signIn("credentials", {
+            accessToken: access_token,
+            refreshToken: access_token_expration,
+            redirect: false,
+          }).then((data) => {
+            if (data?.ok) {
+              router.push(routes.music.musics);
+            }
+          });
+        }
+      },
+      onSettled: () => setIsLoading(false),
+    });
   }
 
   return (
@@ -42,10 +69,10 @@ export default function SigninPage() {
           className="flex flex-col gap-4"
         >
           <TextField
-            name="email"
-            label="email"
+            name="username"
+            label="username"
             control={form.control}
-            inputProps={{ placeholder: "Please enter your email" }}
+            inputProps={{ placeholder: "Please enter your username" }}
           />
           <TextField
             name="password"

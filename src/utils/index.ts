@@ -1,0 +1,1 @@
+export { getServerSideData } from "./getServerSideData";

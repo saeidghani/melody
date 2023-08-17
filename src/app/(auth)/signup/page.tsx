@@ -8,13 +8,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import axios from "axios";
+import { register } from "@/api/auth";
+import { useRouter } from "next/navigation";
 
 const signupSchema = z
   .object({
-    email: z
+    firstName: z
       .string()
-      .min(1, messages.email.required)
-      .email(messages.email.invalid),
+      .min(1, messages.firstName.required)
+      .min(3, messages.firstName.invalid),
+    lastName: z
+      .string()
+      .min(1, messages.lastName.required)
+      .min(3, messages.lastName.invalid),
+    username: z
+      .string()
+      .min(1, messages.username.required)
+      .min(3, messages.username.invalid),
     password: z
       .string()
       .min(1, messages.password.required)
@@ -30,18 +41,41 @@ type FormValues = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
-
+  const router = useRouter();
   const form = useForm<FormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      email: "",
+      firstName: "",
+      lastName: "",
+      username: "",
       password: "",
       passwordConfirm: "",
     },
   });
 
-  function onSubmit(values: FormValues) {
-    console.log(values);
+  async function onSubmit(values: FormValues) {
+    const {
+      firstName: first_name,
+      lastName: last_name,
+      username,
+      password,
+    } = values;
+
+    const body = {
+      first_name,
+      last_name,
+      username,
+      password,
+    };
+
+    setIsLoading(true);
+
+    await register(body, {
+      onSuccess: (data) => {
+        if (data?.ok) router.push(routes.auth.signin);
+      },
+      onSettled: () => setIsLoading(false),
+    });
   }
 
   return (
@@ -53,10 +87,22 @@ export default function SignupPage() {
           className="flex flex-col gap-4"
         >
           <TextField
-            name="email"
-            label="email"
+            name="firstName"
+            label="first name"
             control={form.control}
-            inputProps={{ placeholder: "Please enter your email" }}
+            inputProps={{ placeholder: "Please enter your first name" }}
+          />
+          <TextField
+            name="lastName"
+            label="last name"
+            control={form.control}
+            inputProps={{ placeholder: "Please enter your last name" }}
+          />
+          <TextField
+            name="username"
+            label="username"
+            control={form.control}
+            inputProps={{ placeholder: "Please enter your username" }}
           />
           <TextField
             name="password"
@@ -76,17 +122,12 @@ export default function SignupPage() {
               placeholder: "Please confirm your password",
             }}
           />
-          <Button type="submit" width="full">
+          <Button type="submit" width="full" loading={isLoading}>
             Sign up
           </Button>
         </form>
         <div className="grid place-content-center mt-4">
-          <Link
-            variant="underline"
-            size="sm"
-            loading={isLoading}
-            href={routes.auth.signin}
-          >
+          <Link variant="underline" size="sm" href={routes.auth.signin}>
             Do you have an account? Sign in
           </Link>
         </div>
