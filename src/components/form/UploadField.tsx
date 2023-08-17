@@ -32,7 +32,9 @@ export function UploadField<T extends FieldValues>({
   defaultImagePreview = "",
   ...props
 }: TextFieldProps<T>) {
-  const [imagePreview, setImagePreview] = useState<string>(defaultImagePreview);
+  const [imagePreview, setImagePreview] = useState<string>(
+    () => defaultImagePreview
+  );
 
   return (
     <FormField

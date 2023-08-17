@@ -3,8 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { PlaylistDialog } from "../../../components/common/PlaylistDialog";
 import { PlaylistCard } from "./PlaylistCard";
+import { getPlaylists } from "@/api/playlist";
 
-export default function PlaylistsPage() {
+export default async function PlaylistsPage() {
+  const data = await getPlaylists();
+
   return (
     <section id="playlists" aria-label="playlists">
       <Container>
@@ -21,13 +24,13 @@ export default function PlaylistsPage() {
                      lg:grid-cols-2 xl:grid-cols-3 
                      border-l border-t border-gray-200 sm:mx-0 mt-6"
         >
-          {[1, 2, 3, 4].map((n) => (
+          {data?.result?.items?.map(({ id, title, cover }) => (
             <PlaylistCard
-              key={n}
+              key={id}
               playlist={{
-                id: n,
-                title: "Call of the Mastodon",
-                thumbnail: "/images/playlist-cover.png",
+                id,
+                title,
+                thumbnail: cover,
               }}
             />
           ))}

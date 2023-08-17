@@ -2,8 +2,11 @@ import React from "react";
 import { Link } from "../ui/link";
 import { routes } from "@/constants";
 
-export async function StartButton() {
-  const isAuth = true;
+interface StartButtonProps {
+  isAuth: boolean;
+}
+
+export function StartButton({ isAuth }: StartButtonProps) {
   return (
     <Link
       href={isAuth ? routes.music.musics : routes.auth.signup}

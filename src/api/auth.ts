@@ -1,4 +1,4 @@
-import { ApiOptions, apiHandler } from "@/utils/apiHandler";
+import { ApiOptions, apiHandler } from "@/utils";
 
 type RegisterRequestBody = {
   first_name: string;

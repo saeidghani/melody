@@ -1,14 +1,13 @@
 "use client";
 import {
   ColumnDef,
-  SortingState,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -17,8 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useQuery } from "@/hooks";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -29,17 +27,14 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
-    state: { sorting },
   });
+  const { addQuery, searchParams } = useQuery();
+  const page: string = searchParams.get("page") ?? "1";
 
   return (
     <div>
@@ -98,8 +93,11 @@ export function DataTable<TData, TValue>({
           className="px-4"
           variant="outline"
           size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
+          disabled={+page <= 1}
+          onClick={() => {
+            table.previousPage();
+            addQuery({ params: { page: +page - 1 } });
+          }}
         >
           Previous
         </Button>
@@ -107,8 +105,11 @@ export function DataTable<TData, TValue>({
           className="px-4"
           variant="outline"
           size="sm"
-          onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
+          onClick={() => {
+            table.nextPage();
+            addQuery({ params: { page: +page + 1 } });
+          }}
         >
           Next
         </Button>

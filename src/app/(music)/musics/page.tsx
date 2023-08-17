@@ -1,49 +1,33 @@
+import { getMusics } from "@/api/musics";
+import { getPlaylists } from "@/api/playlist";
 import { Container } from "@/components/common/Container";
-import { DataTable } from "@/components/common/DataTable";
-import { columns } from "./columns";
+import MusicsTable from "./MusicsTable";
+import { SearchInput } from "./SearchInput";
 
-const data = [
-  {
-    id: 1,
-    album_name: "Call of the Mastodon",
-    artist_name: "Mastodon",
-    duration: "280.2151",
-    title: "Deep Sea Creature",
-    year: "2001",
-    file: "http://example.com/song/download/1",
-    format: "mp3",
-  },
-  {
-    id: 2,
-    album_name: "Call of the Mastodon",
-    artist_name: "Mastodon",
-    duration: "280.2151",
-    title: "Deep Sea Creature",
-    year: "2001",
-    file: "http://example.com/song/download/1",
-    format: "mp3",
-  },
-  {
-    id: 3,
-    album_name: "Call of the Mastodon",
-    artist_name: "Mastodon",
-    duration: "280.2151",
-    title: "Deep Sea Creature",
-    year: "2001",
-    file: "http://example.com/song/download/1",
-    format: "mp3",
-  },
-];
+type MusicsPageProps = {
+  searchParams: {
+    page: string;
+    search: string;
+  };
+};
 
-export default function MusicsPage() {
+export default async function MusicsPage({ searchParams }: MusicsPageProps) {
+  const { page = "1", search = "" } = searchParams;
+  const musics = await getMusics(page, search);
+  const playlists = await getPlaylists();
+  console.log(musics?.result?.items?.at(0));
   return (
     <section id="musics" aria-label="musics">
       <Container>
         <h1 className="text-2xl font-bold mb-6 text-center">
           Available musics
         </h1>
-        <div className="mt-8">
-          <DataTable columns={columns} data={data} />
+        <div className="grid gap-4 mt-8">
+          <SearchInput />
+          <MusicsTable
+            musics={musics?.result?.items}
+            playlists={playlists?.result?.items}
+          />
         </div>
       </Container>
     </section>
