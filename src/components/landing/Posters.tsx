@@ -5,25 +5,16 @@ export function Posters() {
   return (
     <div aria-hidden="true" className="pointer-events-none relative">
       <div className="flex items-center gap-x-6 lg:gap-x-4">
+        <PosterColumn srcList={["/images/hero/song-cover-1.jpg"]} />
         <PosterColumn
           srcList={[
-            "/images/hero/song-cover-1.png",
-            "/images/hero/song-cover-2.png",
-          ]}
-        />
-        <PosterColumn
-          srcList={[
-            "/images/hero/song-cover-3.png",
-            "/images/hero/song-cover-4.png",
-            "/images/hero/song-cover-5.png",
+            "/images/hero/song-cover-2.jpg",
+            "/images/hero/song-cover-3.jpeg",
           ]}
         />
         <PosterColumn
           className="max-sm:hidden"
-          srcList={[
-            "/images/hero/song-cover-6.png",
-            "/images/hero/song-cover-7.png",
-          ]}
+          srcList={["/images/hero/song-cover-4.webp"]}
         />
       </div>
     </div>
